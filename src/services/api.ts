@@ -40,6 +40,10 @@ interface IResultCoinsListing extends IResult {
 }
 
 export const fetchCoinsListing = async (filter: Filter): Promise<IResultCoinsListing> => {
+  if (filter.length < 1) return {
+    error: null,
+    coinsListing: []
+  };
   const filterStr = filter.join(",");
   try {
     let result = await axios.get("cryptocurrency/quotes/latest", {
