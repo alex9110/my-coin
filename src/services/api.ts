@@ -3,7 +3,7 @@ import {ICoinMapItem} from "../types/ICoinMapItem";
 import {ICoinListingItem} from "../types/ICoinListingItem";
 import {Filter} from "../types/Filter";
 
-const API_KEY = "";
+const API_KEY = "c66d8652-7b88-484d-bb44-8726421866cf";
 
 
 interface IResult {
