@@ -9,7 +9,7 @@ export const browserHistory = createBrowserHistory();
 // but we pass in a customer history to it.
 const AppRouter = () => (
   <Router history={browserHistory}>
-    <div>
+    <div className="wrapper">
       <Switch>
         <Route path="/" component={HomePage} />
       </Switch>

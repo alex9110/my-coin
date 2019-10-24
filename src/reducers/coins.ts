@@ -3,12 +3,12 @@ import {
   CoinsActionTypes,
   DELETE_COIN_FROM_TRACKED,
   GET_COINS_MAP,
-  GET_NECESSARY_COINS,
+  GET_NECESSARY_COINS, SORT_RACKED_BY,
   UPDATE_FILTER,
   UPDATE_TRACKED_COINS_DATA
 } from "../types/actions";
 import {ICoins} from "../types/ICoins";
-import {localCash} from "../utils";
+import {localCash, sort} from "../utils";
 
 const coinMapReducerDefaultState: ICoins = {
   coinsMap: [],
@@ -56,6 +56,11 @@ const coinsReducer = (
       return {
         ...state,
         trackedCoins: filteredCoins
+      };
+    case SORT_RACKED_BY:
+      return {
+        ...state,
+        trackedCoins: sort(state.trackedCoins, action.payload)
       };
     default:
       return state;

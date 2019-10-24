@@ -11,8 +11,16 @@ import CoinsList from "./CoinsList";
 import {Filter} from "../types/Filter";
 import TrackedCoinsList from "./TrackedCoinsList"
 import {ICoinListingItem} from "../types/ICoinListingItem";
-import {alreadyTracked} from "../utils"
+import {alreadyTracked} from "../utils";
+import {Input} from 'antd';
 
+
+const style: any = {
+  display: "flex",
+  maxWidth: "100%",
+  flexWrap: "wrap",
+  justifyContent: "space-between"
+};
 
 interface HomePageProps {
   id?: string;
@@ -20,12 +28,13 @@ interface HomePageProps {
 }
 
 interface HomePageState {
-  searchInput: string
+  searchInput: string;
+  loading: boolean;
 }
 
 type Props = HomePageProps & LinkStateProps & LinkDispatchProps;
 
-export class HomePagePage extends React.Component<Props, HomePageState> {
+export class HomePagePage extends React.PureComponent<Props, HomePageState> {
 
   static updateFilterTimeout = 300;
   updateFilterTimeoutId: any;
@@ -33,7 +42,8 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchInput: ""
+      searchInput: "",
+      loading: false
     }
   }
 
@@ -45,6 +55,7 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
   onChangeSearchInput = (e: React.FormEvent<HTMLInputElement>): void => {
     e.preventDefault();
     e.stopPropagation();
+    this.setState({loading: true});
     const inputValue = e.currentTarget.value;
     this.setState({
       searchInput: inputValue
@@ -56,6 +67,7 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
         const filter = search(this.props.coinsMap, inputValue);
         this.props.updateFilter(filter);
         this.props.getCoinsListing(filter);
+        this.setState({loading: false});
       }, HomePagePage.updateFilterTimeout)
 
     })
@@ -63,13 +75,20 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
 
   checkIfAlreadyTracked = (clickedCoin: ICoinListingItem) => alreadyTracked(this.props.trackedCoins, clickedCoin);
 
+
   render() {
     return (
-      <form action="#">
-        <input type="text" value={this.state.searchInput} onChange={this.onChangeSearchInput}/>
-        <CoinsList checkIfAlreadyTracked={this.checkIfAlreadyTracked}/>
+      <div style={style}>
+        <form action="#">
+          <Input.Search style={{paddingRight: "8px"}}
+            placeholder="Coin name or symbol"
+            value={this.state.searchInput}
+            onChange={this.onChangeSearchInput}
+          />
+          <CoinsList checkIfAlreadyTracked={this.checkIfAlreadyTracked}/>
+        </form>
         <TrackedCoinsList coinsListing={this.props.trackedCoins}/>
-      </form>
+      </div>
     );
   }
 }

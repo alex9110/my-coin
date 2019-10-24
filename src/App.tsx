@@ -1,4 +1,5 @@
 import React from "react";
+import 'antd/dist/antd.css'
 import "./App.css";
 import { Provider } from "react-redux";
 import { store } from "./store/configureStore";

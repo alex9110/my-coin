@@ -4,7 +4,7 @@ import {
   AppActions,
   DELETE_COIN_FROM_TRACKED,
   GET_COINS_MAP,
-  GET_NECESSARY_COINS,
+  GET_NECESSARY_COINS, SORT_RACKED_BY,
   UPDATE_FILTER,
   UPDATE_TRACKED_COINS_DATA
 } from "../types/actions";
@@ -13,6 +13,7 @@ import {AppState} from "../store/configureStore";
 import {ICoinListingItem} from "../types/ICoinListingItem";
 import {fetchCoinsListing, fetchCoinsMap} from "../services/api";
 import {Filter} from "../types/Filter";
+import {SortBy} from "../types/SortBy";
 
 
 export const getCoinsMap = (coinsMap: ICoinMapItem[]): AppActions => ({
@@ -42,7 +43,6 @@ export const getCoinsListing = (coinsListing: ICoinListingItem[]): AppActions =>
 export const startGetCoinsListing = (filter: Filter) => {
   return async (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
     const result = await fetchCoinsListing(filter);
-    console.log(result);
     dispatch(getCoinsListing(result.coinsListing));
   };
 };
@@ -68,4 +68,9 @@ export const startUpdateTrackedCoins = (coinsListing: ICoinListingItem[]) => {
 export const deleteTrackedCoins = (id: number): AppActions => ({
   type: DELETE_COIN_FROM_TRACKED,
   payload: id
+});
+
+export const sorTrackedCoins = (by: SortBy): AppActions => ({
+  type: SORT_RACKED_BY,
+  payload: by
 });
